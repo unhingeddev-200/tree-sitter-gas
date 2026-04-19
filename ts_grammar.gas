@@ -1,0 +1,79 @@
+.include "consts_asm.inc"
+
+.global asm_run_vm
+.global asm_add_op
+.global asm_load_ops
+
+.extern asm_op_addr
+
+.equ REG_PC, 15
+
+.macro PCL regs dst
+    movq $REG_PC, %r8
+    movq (\regs, %r8, 8), \dst
+.endm
+
+.macro PCS src regs
+    movq $REG_PC, %r8
+    movq \src, (\regs, %r8, 8)
+.endm
+
+.macro LOAD_ADDRS lbl const
+    leaq \lbl(%rip), %rax
+    movq $\const, %r8
+    movq %rax, (%rsi,%r8,8)
+.endm
+
+.text
+  asm_load_ops:
+    leaq asm_op_addr(%rip), %rsi
+    LOAD_ADDRS asm_add_op, OP_ADD
+    xor  %rax, %rax
+    ret
+  asm_run_vm: // *DN_Registers: %rdi
+    PCL %rdi, %rax
+    jmp *%rax
+  asm_mov_op:
+    ret
+  asm_add_op:
+    ret
+  asm_sub_op:
+    ret
+  asm_mul_op:
+    ret
+  asm_div_op:
+    ret
+  asm_mod_op:
+    ret
+  asm_and_op:
+    ret
+  asm_or_op:
+    ret
+  asm_xor_op:
+    ret
+  asm_not_op:
+    ret
+  asm_shl_op:
+    ret
+  asm_shr_op:
+    ret
+  asm_jmp_op:
+    ret
+  asm_jpz_op:
+    ret
+  asm_jpnz_op:
+    ret
+  asm_lt_op:
+    ret
+  asm_le_op:
+    ret
+  asm_gt_op:
+    ret
+  asm_ge_op:
+    ret
+  asm_eq_op:
+    ret
+  asm_ne_op:
+    ret
+  asm_nop_op:
+    ret
